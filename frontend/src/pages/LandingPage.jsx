@@ -7,16 +7,30 @@ const LandingPage = () => {
   const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
-    const storedApps = JSON.parse(localStorage.getItem("applications")) || [];
-    setApplications(storedApps);
+    const storedApps = localStorage.getItem("applications");
+    try {
+      const parsedApps = storedApps ? JSON.parse(storedApps) : [];
+      setApplications(parsedApps);
+    } catch (error) {
+      console.error("Error parsing applications from localStorage:", error);
+      setApplications([]); 
+    }
   }, []);
+  
 
-  const handleSaveApplication = (newApp) => {
-    setApplications((prevApps) => {
-      const updatedApps = [...prevApps, newApp];
-      localStorage.setItem("applications", JSON.stringify(updatedApps));
-      return updatedApps;
-    });
+  // const handleSaveApplication = (newApp) => {
+  //   setApplications((prevApps) => {
+  //     const updatedApps = [...prevApps, newApp];
+  //     localStorage.setItem("applications", JSON.stringify(updatedApps));
+  //     return updatedApps;
+  //   });
+  // };
+
+  useEffect(() => {
+    localStorage.setItem("applications", JSON.stringify(applications));
+  }, [applications]);
+  const handleApplicationUpdate = (updatedApps) => {
+    setApplications([...updatedApps]);
   };
 
   return (
@@ -29,7 +43,6 @@ const LandingPage = () => {
           track your internships and applications all at one place!
         </p>
       </div>
-      {/* TopBar */}
       <div className="flex justify-between m-4">
         <div className="flex gap-6 items-center">
           <button
@@ -68,7 +81,14 @@ const LandingPage = () => {
       </div>
       <div className="grid grid-cols-3 gap-20">
         {applications && applications.length > 0 ? (
-          applications.map((app) => <MainCard key={app.id} application={app} />)
+          applications.map((app) => (
+            <MainCard
+              key={app.id}
+              application={app}
+              onUpdate={handleApplicationUpdate}
+              applications={applications}
+            />
+          ))
         ) : (
           <p>No applications found.</p>
         )}
@@ -76,7 +96,8 @@ const LandingPage = () => {
       {showForm && (
         <ApplicationForm
           onClose={() => setShowForm(false)}
-          onSave={handleSaveApplication}
+          onSave={handleApplicationUpdate}
+          formData={null}
         />
       )}
     </div>
