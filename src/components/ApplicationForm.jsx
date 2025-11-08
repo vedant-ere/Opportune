@@ -12,8 +12,11 @@ const ApplicationForm = ({ onClose, onSave, formData }) => {
     applicationDate:"",
     followupDate:"",
     notes:"",
-  
-
+    location:"",
+    salary:"",
+    jobUrl:"",
+    contactPerson:"",
+    contactEmail:"",
   })
   useEffect(() => {
     if(formData){
@@ -22,7 +25,7 @@ const ApplicationForm = ({ onClose, onSave, formData }) => {
   }, [formData])
 
   const handleChange = (e) =>{
-    setForm({...form, [e.target.name]: e.target.value })
+    setForm({...form, [e.target.name] : e.target.value })
   }
 
   const handleSubmit = (e) => {
@@ -57,84 +60,177 @@ const ApplicationForm = ({ onClose, onSave, formData }) => {
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", keyPress);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
+      document.removeEventListener("mousedown",  handleClickOutside)
     }
   }, [onClose])
 
   return ReactDOM.createPortal (
-    <div className="fixed inset-0 flex justify-center  bg-opacity-20 backdrop-blur-xs items-center ">
-      <div ref={modalRef} className="bg-[#2c2c2c] p-6 rounded-lg w-xl  shadow-lg">
-        <h2 className="text-xl font-bold mb-4 text-white">{formData ? "Edit Application" : "New Application"}</h2>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <input
-            type="text"
-            placeholder="Company"
-            name="company"
-            value={form.company}
-            onChange={handleChange}
-            className="border border-gray-500 rounded-lg p-2 text-gray-400"
-            required
-          />
-          <input
-            type="text"
-            placeholder="Position"
-            name="position"
-            value={form.position}
-            onChange={handleChange}
-            className="border border-gray-500 rounded-lg px-2 py-2  text-white"
-            required
-          />
-          
-          <label className="text-gray-400">Status</label>
-          <select
-            value={form.status}
-            name="status"
-            onChange={handleChange}
-            className=" p-2 border border-gray-500 rounded-lg text-gray-400"
-          >
-            <option value="Applied">Applied</option>
-            <option value="Waiting">Waiting</option>
-            <option value="Interview">Interview</option>
-            <option value="Accepted">Accepted</option>
-            <option value="Rejected">Rejected</option>
-          </select>
-          <label className="text-gray-400">Application Date</label>
-          <input
-            type="date"
-            value={form.applicationDate}
-            name="applicationDate"
-            onChange={handleChange}
-            className="border border-gray-500 rounded-lg p-2  text-gray-400"
-            required
-          />
-          <label className="text-gray-400">Follow Up Date</label>
-          <input
-            type="date"
-            value={form.followupDate}
-            name="followupDate"
-            onChange={handleChange}
-            className="border border-gray-500 rounded-lg p-2  text-gray-400"
-          />
-          <label className="text-gray-400">Notes</label>
-          <textarea
-            name="notes"
-            value={form.notes}
-            onChange={handleChange}
-            className="border border-gray-500 rounded-lg p-2  text-gray-400"
-          ></textarea>
-          <div className="flex justify-between mt-4">
-            <button
-              type="submit"
-              className="px-4 py-2 bg-gray-500 cursor-pointer w-full mr-4 text-white rounded hover:bg-green-400"
-            >
-              Save
-            </button>
+    <div className="fixed inset-0 flex justify-center bg-black bg-opacity-30 backdrop-blur-sm items-center z-40 animate-fadeIn">
+      <div ref={modalRef} className="bg-white p-6 rounded-lg w-full max-w-2xl mx-4 shadow-2xl border border-gray-200 max-h-[90vh] overflow-y-auto">
+        <h2 className="heading-secondary mb-6">{formData ? "Edit Application" : "New Application"}</h2>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          {/* Basic Information */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-gray-600 text-sm mb-1.5 block font-medium">Company *</label>
+              <input
+                type="text"
+                placeholder="e.g., Google"
+                name="company"
+                value={form.company}
+                onChange={handleChange}
+                className="input-base w-full"
+                required
+              />
+            </div>
+            <div>
+              <label className="text-gray-600 text-sm mb-1.5 block font-medium">Position *</label>
+              <input
+                type="text"
+                placeholder="e.g., Software Engineer"
+                name="position"
+                value={form.position}
+                onChange={handleChange}
+                className="input-base w-full"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-gray-600 text-sm mb-1.5 block font-medium">Location</label>
+              <input
+                type="text"
+                placeholder="e.g., San Francisco, CA"
+                name="location"
+                value={form.location}
+                onChange={handleChange}
+                className="input-base w-full"
+              />
+            </div>
+            <div>
+              <label className="text-gray-600 text-sm mb-1.5 block font-medium">Salary Range</label>
+              <input
+                type="text"
+                placeholder="e.g., $80k - $120k"
+                name="salary"
+                value={form.salary}
+                onChange={handleChange}
+                className="input-base w-full"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="text-gray-600 text-sm mb-1.5 block font-medium">Job URL</label>
+            <input
+              type="url"
+              placeholder="https://example.com/job-posting"
+              name="jobUrl"
+              value={form.jobUrl}
+              onChange={handleChange}
+              className="input-base w-full"
+            />
+          </div>
+
+          <div className="divider my-2"></div>
+
+          {/* Contact Information */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-gray-600 text-sm mb-1.5 block font-medium">Contact Person</label>
+              <input
+                type="text"
+                placeholder="e.g., John Doe"
+                name="contactPerson"
+                value={form.contactPerson}
+                onChange={handleChange}
+                className="input-base w-full"
+              />
+            </div>
+            <div>
+              <label className="text-gray-600 text-sm mb-1.5 block font-medium">Contact Email</label>
+              <input
+                type="email"
+                placeholder="e.g., recruiter@company.com"
+                name="contactEmail"
+                value={form.contactEmail}
+                onChange={handleChange}
+                className="input-base w-full"
+              />
+            </div>
+          </div>
+
+          <div className="divider my-2"></div>
+
+          {/* Status and Dates */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="text-gray-600 text-sm mb-1.5 block font-medium">Status *</label>
+              <select
+                value={form.status}
+                name="status"
+                onChange={handleChange}
+                className="input-base w-full"
+              >
+                <option value="Applied">Applied</option>
+                <option value="Waiting">Waiting</option>
+                <option value="Interview">Interview</option>
+                <option value="Accepted">Accepted</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-gray-600 text-sm mb-1.5 block font-medium">Application Date *</label>
+              <input
+                type="date"
+                value={form.applicationDate}
+                name="applicationDate"
+                onChange={handleChange}
+                className="input-base w-full"
+                required
+              />
+            </div>
+            <div>
+              <label className="text-gray-600 text-sm mb-1.5 block font-medium">Follow Up Date</label>
+              <input
+                type="date"
+                value={form.followupDate}
+                name="followupDate"
+                onChange={handleChange}
+                className="input-base w-full"
+              />
+            </div>
+          </div>
+
+          {/* Notes */}
+          <div>
+            <label className="text-gray-600 text-sm mb-1.5 block font-medium">Notes</label>
+            <textarea
+              name="notes"
+              value={form.notes}
+              onChange={handleChange}
+              rows="4"
+              placeholder="Add any additional notes about this application..."
+              className="input-base w-full resize-none"
+            ></textarea>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex justify-end gap-3 mt-4 pt-4 border-t border-gray-200">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-red-500 text-white cursor-pointer rounded hover:bg-red-600"
+              className="btn-secondary"
             >
               Cancel
+            </button>
+            <button
+              type="submit"
+              className="btn-primary"
+            >
+              {formData ? "Update" : "Save"} Application
             </button>
           </div>
         </form>
