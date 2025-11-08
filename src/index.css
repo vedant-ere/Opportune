@@ -28,12 +28,65 @@
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --letter-spacing-tight: -0.02em;
   --letter-spacing-normal: -0.01em;
+
+  /* Semantic Colors - Light Mode (Default) */
+  --bg-primary: var(--color-white);
+  --bg-secondary: var(--color-gray-50);
+  --bg-tertiary: var(--color-gray-100);
+  --bg-card: var(--color-white);
+  --bg-hover: var(--color-gray-100);
+  --bg-active: var(--color-gray-200);
+
+  --text-primary: var(--color-black);
+  --text-secondary: var(--color-gray-600);
+  --text-tertiary: var(--color-gray-500);
+  --text-inverse: var(--color-white);
+
+  --border-primary: var(--color-gray-200);
+  --border-secondary: var(--color-gray-300);
+  --border-tertiary: var(--color-gray-400);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  --scrollbar-track: var(--color-gray-100);
+  --scrollbar-thumb: var(--color-gray-300);
+  --scrollbar-thumb-hover: var(--color-gray-400);
+}
+
+/* Dark Mode Theme */
+[data-theme="dark"] {
+  /* Semantic Colors - Dark Mode */
+  --bg-primary: #0A0A0A;
+  --bg-secondary: #141414;
+  --bg-tertiary: #1A1A1A;
+  --bg-card: #141414;
+  --bg-hover: #1A1A1A;
+  --bg-active: #262626;
+
+  --text-primary: var(--color-white);
+  --text-secondary: var(--color-gray-400);
+  --text-tertiary: var(--color-gray-500);
+  --text-inverse: var(--color-black);
+
+  --border-primary: #262626;
+  --border-secondary: #404040;
+  --border-tertiary: #525252;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+
+  --scrollbar-track: #141414;
+  --scrollbar-thumb: #404040;
+  --scrollbar-thumb-hover: #525252;
 }
 
 body {
   font-family: var(--font-sans);
-  background: var(--color-white);
-  color: var(--color-black);
+  background: var(--bg-primary);
+  color: var(--text-primary);
   letter-spacing: var(--letter-spacing-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -75,16 +128,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-gray-100);
+  background: var(--scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-gray-300);
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-gray-400);
+  background: var(--scrollbar-thumb-hover);
 }
 
 /* Text Truncate */
@@ -115,9 +168,9 @@ body {
 
 /* Buttons */
 .btn-primary {
-  background: var(--color-black);
-  color: var(--color-white);
-  border: 1px solid var(--color-black);
+  background: var(--text-primary);
+  color: var(--text-inverse);
+  border: 1px solid var(--text-primary);
   padding: 0.5rem 1rem;
   border-radius: 6px;
   font-size: 0.875rem;
@@ -127,18 +180,17 @@ body {
 }
 
 .btn-primary:hover {
-  background: var(--color-gray-800);
-  border-color: var(--color-gray-800);
+  opacity: 0.9;
 }
 
 .btn-primary:active {
-  background: var(--color-gray-900);
+  opacity: 0.8;
 }
 
 .btn-secondary {
-  background: var(--color-white);
-  color: var(--color-black);
-  border: 1px solid var(--color-gray-300);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-secondary);
   padding: 0.5rem 1rem;
   border-radius: 6px;
   font-size: 0.875rem;
@@ -148,13 +200,13 @@ body {
 }
 
 .btn-secondary:hover {
-  border-color: var(--color-gray-400);
-  background: var(--color-gray-50);
+  border-color: var(--border-tertiary);
+  background: var(--bg-hover);
 }
 
 .btn-ghost {
   background: transparent;
-  color: var(--color-gray-600);
+  color: var(--text-secondary);
   border: 1px solid transparent;
   padding: 0.5rem 1rem;
   border-radius: 6px;
@@ -165,42 +217,42 @@ body {
 }
 
 .btn-ghost:hover {
-  background: var(--color-gray-100);
-  color: var(--color-black);
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 /* Input Fields */
 .input-base {
-  background: var(--color-white);
-  border: 1px solid var(--color-gray-300);
+  background: var(--bg-card);
+  border: 1px solid var(--border-secondary);
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
   font-size: 0.875rem;
-  color: var(--color-black);
+  color: var(--text-primary);
   letter-spacing: var(--letter-spacing-normal);
 }
 
 .input-base:focus {
   outline: none;
-  border-color: var(--color-black);
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+  border-color: var(--text-primary);
+  box-shadow: 0 0 0 3px rgba(128, 128, 128, 0.1);
 }
 
 .input-base::placeholder {
-  color: var(--color-gray-400);
+  color: var(--text-tertiary);
 }
 
 /* Cards */
 .card-base {
-  background: var(--color-white);
-  border: 1px solid var(--color-gray-200);
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
   border-radius: 8px;
   padding: 1rem;
 }
 
 .card-base:hover {
-  border-color: var(--color-gray-300);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-color: var(--border-secondary);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Status Indicators */
@@ -242,17 +294,17 @@ body {
   font-size: 2rem;
   font-weight: 600;
   letter-spacing: var(--letter-spacing-tight);
-  color: var(--color-black);
+  color: var(--text-primary);
 }
 
 .heading-secondary {
   font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: var(--letter-spacing-tight);
-  color: var(--color-black);
+  color: var(--text-primary);
 }
 
 /* Dividers */
 .divider {
-  border-top: 1px solid var(--color-gray-200);
+  border-top: 1px solid var(--border-primary);
 }

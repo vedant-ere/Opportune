@@ -65,14 +65,14 @@ const ApplicationForm = ({ onClose, onSave, formData }) => {
   }, [onClose])
 
   return ReactDOM.createPortal (
-    <div className="fixed inset-0 flex justify-center bg-black bg-opacity-30 backdrop-blur-sm items-center z-40 animate-fadeIn">
-      <div ref={modalRef} className="bg-white p-6 rounded-lg w-full max-w-2xl mx-4 shadow-2xl border border-gray-200 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 flex justify-center backdrop-blur-sm items-center z-40 animate-fadeIn" style={{ background: 'rgba(0, 0, 0, 0.3)' }}>
+      <div ref={modalRef} className="p-6 rounded-lg w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-primary)', boxShadow: 'var(--shadow-lg)' }}>
         <h2 className="heading-secondary mb-6">{formData ? "Edit Application" : "New Application"}</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {/* Basic Information */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="text-gray-600 text-sm mb-1.5 block font-medium">Company *</label>
+              <label className="text-sm mb-1.5 block font-medium" style={{ color: 'var(--text-secondary)' }}>Company *</label>
               <input
                 type="text"
                 placeholder="e.g., Google"
@@ -84,7 +84,7 @@ const ApplicationForm = ({ onClose, onSave, formData }) => {
               />
             </div>
             <div>
-              <label className="text-gray-600 text-sm mb-1.5 block font-medium">Position *</label>
+              <label className="text-sm mb-1.5 block font-medium" style={{ color: 'var(--text-secondary)' }}>Position *</label>
               <input
                 type="text"
                 placeholder="e.g., Software Engineer"
@@ -99,7 +99,7 @@ const ApplicationForm = ({ onClose, onSave, formData }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="text-gray-600 text-sm mb-1.5 block font-medium">Location</label>
+              <label className="text-sm mb-1.5 block font-medium" style={{ color: 'var(--text-secondary)' }}>Location</label>
               <input
                 type="text"
                 placeholder="e.g., San Francisco, CA"
@@ -110,7 +110,7 @@ const ApplicationForm = ({ onClose, onSave, formData }) => {
               />
             </div>
             <div>
-              <label className="text-gray-600 text-sm mb-1.5 block font-medium">Salary Range</label>
+              <label className="text-sm mb-1.5 block font-medium" style={{ color: 'var(--text-secondary)' }}>Salary Range</label>
               <input
                 type="text"
                 placeholder="e.g., $80k - $120k"
@@ -123,7 +123,7 @@ const ApplicationForm = ({ onClose, onSave, formData }) => {
           </div>
 
           <div>
-            <label className="text-gray-600 text-sm mb-1.5 block font-medium">Job URL</label>
+            <label className="text-sm mb-1.5 block font-medium" style={{ color: 'var(--text-secondary)' }}>Job URL</label>
             <input
               type="url"
               placeholder="https://example.com/job-posting"
@@ -139,7 +139,7 @@ const ApplicationForm = ({ onClose, onSave, formData }) => {
           {/* Contact Information */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="text-gray-600 text-sm mb-1.5 block font-medium">Contact Person</label>
+              <label className="text-sm mb-1.5 block font-medium" style={{ color: 'var(--text-secondary)' }}>Contact Person</label>
               <input
                 type="text"
                 placeholder="e.g., John Doe"
@@ -150,7 +150,7 @@ const ApplicationForm = ({ onClose, onSave, formData }) => {
               />
             </div>
             <div>
-              <label className="text-gray-600 text-sm mb-1.5 block font-medium">Contact Email</label>
+              <label className="text-sm mb-1.5 block font-medium" style={{ color: 'var(--text-secondary)' }}>Contact Email</label>
               <input
                 type="email"
                 placeholder="e.g., recruiter@company.com"
@@ -167,7 +167,7 @@ const ApplicationForm = ({ onClose, onSave, formData }) => {
           {/* Status and Dates */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="text-gray-600 text-sm mb-1.5 block font-medium">Status *</label>
+              <label className="text-sm mb-1.5 block font-medium" style={{ color: 'var(--text-secondary)' }}>Status *</label>
               <select
                 value={form.status}
                 name="status"
@@ -182,7 +182,7 @@ const ApplicationForm = ({ onClose, onSave, formData }) => {
               </select>
             </div>
             <div>
-              <label className="text-gray-600 text-sm mb-1.5 block font-medium">Application Date *</label>
+              <label className="text-sm mb-1.5 block font-medium" style={{ color: 'var(--text-secondary)' }}>Application Date *</label>
               <input
                 type="date"
                 value={form.applicationDate}
@@ -193,7 +193,7 @@ const ApplicationForm = ({ onClose, onSave, formData }) => {
               />
             </div>
             <div>
-              <label className="text-gray-600 text-sm mb-1.5 block font-medium">Follow Up Date</label>
+              <label className="text-sm mb-1.5 block font-medium" style={{ color: 'var(--text-secondary)' }}>Follow Up Date</label>
               <input
                 type="date"
                 value={form.followupDate}
@@ -206,7 +206,7 @@ const ApplicationForm = ({ onClose, onSave, formData }) => {
 
           {/* Notes */}
           <div>
-            <label className="text-gray-600 text-sm mb-1.5 block font-medium">Notes</label>
+            <label className="text-sm mb-1.5 block font-medium" style={{ color: 'var(--text-secondary)' }}>Notes</label>
             <textarea
               name="notes"
               value={form.notes}

@@ -62,28 +62,36 @@ const MainCard = ({ application, onUpdate, applications, compact = false, onDele
   if (compact) {
     return (
       <>
-        <div className="bg-white p-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-all cursor-pointer">
+        <div className="p-3 rounded-lg transition-all cursor-pointer" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-primary)' }}
+          onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--border-secondary)'}
+          onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border-primary)'}>
           <div className="flex justify-between items-start mb-2">
-            <h3 className="text-black font-medium text-sm line-clamp-1">{application.company}</h3>
+            <h3 className="font-medium text-sm line-clamp-1" style={{ color: 'var(--text-primary)' }}>{application.company}</h3>
             {isFollowUpSoon() && <span className="status-dot waiting inline-block ml-1"></span>}
           </div>
-          <p className="text-gray-600 text-xs mb-2 line-clamp-1">{application.position}</p>
+          <p className="text-xs mb-2 line-clamp-1" style={{ color: 'var(--text-secondary)' }}>{application.position}</p>
           {application.location && (
-            <p className="text-gray-400 text-xs mb-2">{application.location}</p>
+            <p className="text-xs mb-2" style={{ color: 'var(--text-tertiary)' }}>{application.location}</p>
           )}
-          <p className="text-gray-400 text-xs text-mono">
+          <p className="text-xs text-mono" style={{ color: 'var(--text-tertiary)' }}>
             {new Date(application.applicationDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
           </p>
-          <div className="flex gap-1 mt-3 pt-2 border-t border-gray-100">
+          <div className="flex gap-1 mt-3 pt-2" style={{ borderTop: '1px solid var(--border-primary)' }}>
             <button
               onClick={handleEdit}
-              className="flex-1 py-1 px-2 text-gray-600 hover:text-black text-xs font-medium transition-colors"
+              className="flex-1 py-1 px-2 text-xs font-medium transition-colors"
+              style={{ color: 'var(--text-secondary)' }}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-primary)'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
             >
               Edit
             </button>
             <button
               onClick={() => setShowConfirmDelete(true)}
-              className="flex-1 py-1 px-2 text-gray-600 hover:text-red-600 text-xs font-medium transition-colors"
+              className="flex-1 py-1 px-2 text-xs font-medium transition-colors"
+              style={{ color: 'var(--text-secondary)' }}
+              onMouseEnter={(e) => e.currentTarget.style.color = '#DC2626'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
             >
               Delete
             </button>
@@ -114,8 +122,8 @@ const MainCard = ({ application, onUpdate, applications, compact = false, onDele
         <div className="flex flex-col">
           <div className="flex justify-between items-start mb-4">
             <div className="flex-1">
-              <h3 className="text-xl font-semibold text-black mb-1 tracking-tight">{application.company || "N/A"}</h3>
-              <p className="text-sm text-gray-600">{application.position || "N/A"}</p>
+              <h3 className="text-xl font-semibold mb-1 tracking-tight" style={{ color: 'var(--text-primary)' }}>{application.company || "N/A"}</h3>
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{application.position || "N/A"}</p>
             </div>
             <div className="flex items-center gap-2">
               <span className={getStatusDotClass(application.status)}></span>
@@ -129,27 +137,27 @@ const MainCard = ({ application, onUpdate, applications, compact = false, onDele
 
           <div className="space-y-2 mb-4">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-500">Applied</span>
-              <span className="text-black font-medium text-mono">
+              <span style={{ color: 'var(--text-tertiary)' }}>Applied</span>
+              <span className="font-medium text-mono" style={{ color: 'var(--text-primary)' }}>
                 {new Date(application.applicationDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
               </span>
             </div>
             {application.location && (
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Location</span>
-                <span className="text-gray-700">{application.location}</span>
+                <span style={{ color: 'var(--text-tertiary)' }}>Location</span>
+                <span style={{ color: 'var(--text-secondary)' }}>{application.location}</span>
               </div>
             )}
             {application.salary && (
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Salary</span>
-                <span className="text-gray-700 text-mono">{application.salary}</span>
+                <span style={{ color: 'var(--text-tertiary)' }}>Salary</span>
+                <span className="text-mono" style={{ color: 'var(--text-secondary)' }}>{application.salary}</span>
               </div>
             )}
             {application.followupDate && (
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Follow Up</span>
-                <span className={`font-medium text-mono ${isFollowUpSoon() ? 'text-amber-600' : 'text-gray-700'}`}>
+                <span style={{ color: 'var(--text-tertiary)' }}>Follow Up</span>
+                <span className={`font-medium text-mono ${isFollowUpSoon() ? 'text-amber-600' : ''}`} style={!isFollowUpSoon() ? { color: 'var(--text-secondary)' } : {}}>
                   {new Date(application.followupDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   {isFollowUpSoon() && <span className="status-dot waiting inline-block ml-2"></span>}
                 </span>
@@ -161,38 +169,41 @@ const MainCard = ({ application, onUpdate, applications, compact = false, onDele
             <>
               <button
                 onClick={() => setShowDetails(!showDetails)}
-                className="text-gray-600 hover:text-black text-sm mb-2 text-left transition-colors font-medium"
+                className="text-sm mb-2 text-left transition-colors font-medium"
+                style={{ color: 'var(--text-secondary)' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-primary)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
               >
                 {showDetails ? "↓ Hide Details" : "→ Show Details"}
               </button>
               {showDetails && (
-                <div className="bg-gray-50 rounded-lg p-3 mb-3 space-y-2 border border-gray-100">
+                <div className="rounded-lg p-3 mb-3 space-y-2" style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-primary)' }}>
                   {application.jobUrl && (
                     <div className="text-sm">
-                      <span className="text-gray-500">Job URL:</span>{' '}
-                      <a href={application.jobUrl} target="_blank" rel="noopener noreferrer" className="text-black hover:underline">
+                      <span style={{ color: 'var(--text-tertiary)' }}>Job URL:</span>{' '}
+                      <a href={application.jobUrl} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: 'var(--text-primary)' }}>
                         View Posting
                       </a>
                     </div>
                   )}
                   {application.contactPerson && (
                     <div className="text-sm">
-                      <span className="text-gray-500">Contact:</span>{' '}
-                      <span className="text-black">{application.contactPerson}</span>
+                      <span style={{ color: 'var(--text-tertiary)' }}>Contact:</span>{' '}
+                      <span style={{ color: 'var(--text-primary)' }}>{application.contactPerson}</span>
                     </div>
                   )}
                   {application.contactEmail && (
                     <div className="text-sm">
-                      <span className="text-gray-500">Email:</span>{' '}
-                      <a href={`mailto:${application.contactEmail}`} className="text-black hover:underline">
+                      <span style={{ color: 'var(--text-tertiary)' }}>Email:</span>{' '}
+                      <a href={`mailto:${application.contactEmail}`} className="hover:underline" style={{ color: 'var(--text-primary)' }}>
                         {application.contactEmail}
                       </a>
                     </div>
                   )}
                   {application.notes && (
                     <div className="text-sm">
-                      <span className="text-gray-500 block mb-1">Notes:</span>
-                      <p className="text-gray-700">{application.notes}</p>
+                      <span className="block mb-1" style={{ color: 'var(--text-tertiary)' }}>Notes:</span>
+                      <p style={{ color: 'var(--text-secondary)' }}>{application.notes}</p>
                     </div>
                   )}
                 </div>

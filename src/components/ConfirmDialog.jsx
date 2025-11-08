@@ -27,13 +27,14 @@ const ConfirmDialog = ({ title, message, onConfirm, onCancel }) => {
   }, [onCancel]);
 
   return ReactDOM.createPortal(
-    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-30 backdrop-blur-sm z-50 animate-fadeIn">
+    <div className="fixed inset-0 flex justify-center items-center backdrop-blur-sm z-50 animate-fadeIn" style={{ background: 'rgba(0, 0, 0, 0.3)' }}>
       <div
         ref={dialogRef}
-        className="bg-white p-6 rounded-lg shadow-2xl max-w-md w-full mx-4 border border-gray-200"
+        className="p-6 rounded-lg max-w-md w-full mx-4"
+        style={{ background: 'var(--bg-card)', border: '1px solid var(--border-primary)', boxShadow: 'var(--shadow-lg)' }}
       >
-        <h3 className="text-lg font-semibold mb-2 text-black tracking-tight">{title}</h3>
-        <p className="text-gray-600 mb-6 text-sm">{message}</p>
+        <h3 className="text-lg font-semibold mb-2 tracking-tight" style={{ color: 'var(--text-primary)' }}>{title}</h3>
+        <p className="mb-6 text-sm" style={{ color: 'var(--text-secondary)' }}>{message}</p>
         <div className="flex justify-end gap-3">
           <button
             onClick={onCancel}
@@ -43,7 +44,10 @@ const ConfirmDialog = ({ title, message, onConfirm, onCancel }) => {
           </button>
           <button
             onClick={onConfirm}
-            className="btn-primary bg-red-600 hover:bg-red-700 border-red-600"
+            className="px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors"
+            style={{ background: '#DC2626', border: '1px solid #DC2626' }}
+            onMouseEnter={(e) => e.currentTarget.style.background = '#B91C1C'}
+            onMouseLeave={(e) => e.currentTarget.style.background = '#DC2626'}
           >
             Delete
           </button>

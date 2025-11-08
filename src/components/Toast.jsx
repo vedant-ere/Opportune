@@ -10,30 +10,37 @@ const Toast = ({ message, type = "success", onClose, duration = 3000 }) => {
     return () => clearTimeout(timer);
   }, [duration, onClose]);
 
-  const getToastStyles = () => {
+  const getBorderColor = () => {
     switch (type) {
       case "success":
-        return "bg-white border-emerald-600 text-black";
+        return "#059669";
       case "error":
-        return "bg-white border-red-600 text-black";
+        return "#DC2626";
       case "warning":
-        return "bg-white border-amber-600 text-black";
+        return "#D97706";
       case "info":
-        return "bg-white border-black text-black";
       default:
-        return "bg-white border-gray-400 text-black";
+        return "var(--text-primary)";
     }
   };
 
   return ReactDOM.createPortal(
     <div className="fixed top-4 right-4 z-50 animate-slideIn">
       <div
-        className={`${getToastStyles()} px-4 py-3 rounded-lg shadow-xl border-l-2 flex items-center gap-3 min-w-[300px]`}
+        className="px-4 py-3 rounded-lg border-l-2 flex items-center gap-3 min-w-[300px]"
+        style={{
+          background: 'var(--bg-card)',
+          borderColor: getBorderColor(),
+          boxShadow: 'var(--shadow-lg)'
+        }}
       >
-        <div className="flex-1 text-sm font-medium">{message}</div>
+        <div className="flex-1 text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{message}</div>
         <button
           onClick={onClose}
-          className="text-gray-400 hover:text-black font-bold text-xl"
+          className="font-bold text-xl transition-colors"
+          style={{ color: 'var(--text-tertiary)' }}
+          onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-primary)'}
+          onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-tertiary)'}
         >
           ×
         </button>

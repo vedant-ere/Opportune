@@ -5,6 +5,7 @@ import Statistics from "../components/Statistics";
 import KanbanBoard from "../components/KanbanBoard";
 import EmptyState from "../components/EmptyState";
 import Toast from "../components/Toast";
+import ThemeToggle from "../components/ThemeToggle";
 
 const LandingPage = () => {
   const [applications, setApplications] = useState([]);
@@ -153,23 +154,26 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white px-4 py-8">
+    <div className="min-h-screen px-4 py-8" style={{ background: 'var(--bg-primary)' }}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-semibold text-black mb-2 tracking-tight">
-            Opportune
-          </h1>
-          <p className="text-gray-600 text-base">
-            Track your job applications with clarity
-          </p>
+        <div className="mb-12 flex items-start justify-between">
+          <div>
+            <h1 className="text-4xl md:text-5xl font-semibold mb-2 tracking-tight" style={{ color: 'var(--text-primary)' }}>
+              Opportune
+            </h1>
+            <p className="text-base" style={{ color: 'var(--text-secondary)' }}>
+              Track your job applications with clarity
+            </p>
+          </div>
+          <ThemeToggle />
         </div>
 
         {/* Statistics Dashboard */}
         {applications.length > 0 && <Statistics applications={applications} />}
 
         {/* Controls Bar */}
-        <div className="bg-white rounded-lg p-4 mb-6 border border-gray-200">
+        <div className="rounded-lg p-4 mb-6" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-primary)' }}>
           <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
             {/* Left side - Action buttons */}
             <div className="flex flex-wrap gap-2">
@@ -195,13 +199,16 @@ const LandingPage = () => {
                 >
                   Export
                 </button>
-                <div id="export-menu" className="hidden absolute top-full mt-1 left-0 bg-white border border-gray-200 rounded-lg shadow-xl z-10 min-w-[150px]">
+                <div id="export-menu" className="hidden absolute top-full mt-1 left-0 rounded-lg z-10 min-w-[150px]" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-primary)', boxShadow: 'var(--shadow-md)' }}>
                   <button
                     onClick={() => {
                       handleExportJSON();
                       document.getElementById("export-menu").classList.add("hidden");
                     }}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-50 text-black rounded-t-lg text-sm"
+                    className="block w-full text-left px-4 py-2 rounded-t-lg text-sm"
+                    style={{ color: 'var(--text-primary)' }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                   >
                     Export JSON
                   </button>
@@ -210,7 +217,10 @@ const LandingPage = () => {
                       handleExportCSV();
                       document.getElementById("export-menu").classList.add("hidden");
                     }}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-50 text-black rounded-b-lg text-sm"
+                    className="block w-full text-left px-4 py-2 rounded-b-lg text-sm"
+                    style={{ color: 'var(--text-primary)' }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                   >
                     Export CSV
                   </button>

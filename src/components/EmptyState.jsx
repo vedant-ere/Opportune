@@ -3,12 +3,13 @@ import React from "react";
 const EmptyState = ({ onAddNew }) => {
   return (
     <div className="flex flex-col items-center justify-center py-24 px-4 card-base">
-      <div className="w-16 h-16 border-2 border-gray-300 rounded-lg mb-6 flex items-center justify-center">
+      <div className="w-16 h-16 rounded-lg mb-6 flex items-center justify-center" style={{ border: '2px solid var(--border-secondary)' }}>
         <svg
-          className="w-8 h-8 text-gray-400"
+          className="w-8 h-8"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
+          style={{ color: 'var(--text-tertiary)' }}
         >
           <path
             strokeLinecap="round"
@@ -18,8 +19,8 @@ const EmptyState = ({ onAddNew }) => {
           />
         </svg>
       </div>
-      <h2 className="text-xl font-semibold text-black mb-2">No applications yet</h2>
-      <p className="text-gray-500 text-sm mb-8 text-center max-w-md">
+      <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>No applications yet</h2>
+      <p className="text-sm mb-8 text-center max-w-md" style={{ color: 'var(--text-tertiary)' }}>
         Start tracking your job search by adding your first application
       </p>
       <button
