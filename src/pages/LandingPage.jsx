@@ -37,12 +37,12 @@ const LandingPage = () => {
           setCurrentUser(user);
           await loadApplicationsFromDB();
         } else {
-          setShowAuthModal(true);
+          // Invalid token, use guest mode
+          loadFromLocalStorage();
         }
       } else {
-        // Load from localStorage for offline viewing
+        // Load from localStorage for guest mode
         loadFromLocalStorage();
-        setShowAuthModal(true);
       }
       setLoading(false);
     };
@@ -128,10 +128,12 @@ const LandingPage = () => {
 
   const handleLogout = () => {
     logout();
-    setApplications([]);
     setCurrentUser(null);
+    showToast("Logged out successfully. You can continue using the app in guest mode.", "success");
+  };
+
+  const handleShowLogin = () => {
     setShowAuthModal(true);
-    showToast("Logged out successfully", "success");
   };
 
   const showToast = (message, type = "success") => {
@@ -273,15 +275,19 @@ const LandingPage = () => {
             <p className="text-base" style={{ color: 'var(--text-secondary)' }}>
               Track your job applications with clarity
             </p>
-            {currentUser && (
+            {currentUser ? (
               <p className="text-sm mt-1" style={{ color: 'var(--text-tertiary)' }}>
                 Logged in as {currentUser.email}
                 {syncing && <span className="ml-2 text-xs">(syncing...)</span>}
               </p>
+            ) : (
+              <p className="text-sm mt-1" style={{ color: 'var(--text-tertiary)' }}>
+                Guest mode - Data stored locally only
+              </p>
             )}
           </div>
           <div className="flex items-center gap-3">
-            {currentUser && (
+            {currentUser ? (
               <>
                 <button
                   onClick={() => setShowNotificationSettings(true)}
@@ -304,6 +310,17 @@ const LandingPage = () => {
                   <span className="hidden sm:inline">Logout</span>
                 </button>
               </>
+            ) : (
+              <button
+                onClick={handleShowLogin}
+                className="btn-primary flex items-center gap-2"
+                title="Login to sync across devices"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                </svg>
+                <span className="hidden sm:inline">Login</span>
+              </button>
             )}
             <ThemeToggle />
           </div>
@@ -465,12 +482,7 @@ const LandingPage = () => {
         {/* Authentication Modal */}
         {showAuthModal && (
           <AuthModal
-            onClose={() => {
-              // Don't allow closing if not authenticated
-              if (!isAuthenticated()) {
-                showToast("Please login to continue", "warning");
-              }
-            }}
+            onClose={() => setShowAuthModal(false)}
             onAuthSuccess={handleAuthSuccess}
           />
         )}

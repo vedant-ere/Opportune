@@ -205,8 +205,8 @@ const AuthModal = ({ onClose, onAuthSuccess }) => {
           </form>
 
           {/* Toggle */}
-          <div className="border-t border-gray-200 dark:border-gray-800 px-6 py-4 text-center">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+          <div className="border-t border-gray-200 dark:border-gray-800 px-6 py-4">
+            <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-3">
               {isLogin ? "Don't have an account? " : "Already have an account? "}
               <button
                 onClick={() => {
@@ -224,6 +224,12 @@ const AuthModal = ({ onClose, onAuthSuccess }) => {
                 {isLogin ? 'Sign up' : 'Login'}
               </button>
             </p>
+            <button
+              onClick={onClose}
+              className="w-full px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors font-medium"
+            >
+              Continue as Guest (data stored locally only)
+            </button>
           </div>
         </div>
       </div>
