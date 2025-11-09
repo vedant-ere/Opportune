@@ -6,6 +6,9 @@ import KanbanBoard from "../components/KanbanBoard";
 import EmptyState from "../components/EmptyState";
 import Toast from "../components/Toast";
 import ThemeToggle from "../components/ThemeToggle";
+import NotificationSettings from "../components/NotificationSettings";
+import AuthModal from "../components/AuthModal";
+import { isAuthenticated, getUser, logout, verifyToken, authenticatedFetch } from "../utils/auth";
 
 const LandingPage = () => {
   const [applications, setApplications] = useState([]);
@@ -15,27 +18,120 @@ const LandingPage = () => {
   const [sortBy, setSortBy] = useState("newest");
   const [viewMode, setViewMode] = useState("grid"); // grid or kanban
   const [toast, setToast] = useState(null);
+  const [showNotificationSettings, setShowNotificationSettings] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [syncing, setSyncing] = useState(false);
   const fileInputRef = useRef(null);
 
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+  // Check authentication on mount
   useEffect(() => {
-    const storedApps = localStorage.getItem("applications");
-    try {
-      const parsedApps = storedApps ? JSON.parse(storedApps) : [];
-      setApplications(parsedApps);
-    } catch (error) {
-      console.error("Error parsing applications from localStorage:", error);
-      setApplications([]);
-      showToast("Error loading applications", "error");
-    }
+    const checkAuth = async () => {
+      if (isAuthenticated()) {
+        const isValid = await verifyToken();
+        if (isValid) {
+          const user = getUser();
+          setCurrentUser(user);
+          await loadApplicationsFromDB();
+        } else {
+          setShowAuthModal(true);
+        }
+      } else {
+        // Load from localStorage for offline viewing
+        loadFromLocalStorage();
+        setShowAuthModal(true);
+      }
+      setLoading(false);
+    };
+    checkAuth();
   }, []);
 
+  // Save to localStorage whenever applications change
   useEffect(() => {
-    localStorage.setItem("applications", JSON.stringify(applications));
+    if (applications.length > 0) {
+      localStorage.setItem("applications", JSON.stringify(applications));
+    }
   }, [applications]);
+
+  // Load applications from localStorage
+  const loadFromLocalStorage = () => {
+    try {
+      const storedApps = localStorage.getItem("applications");
+      if (storedApps) {
+        const parsedApps = JSON.parse(storedApps);
+        setApplications(parsedApps);
+      }
+    } catch (error) {
+      console.error("Error loading from localStorage:", error);
+      showToast("Error loading applications", "error");
+    }
+  };
+
+  // Load applications from MongoDB
+  const loadApplicationsFromDB = async () => {
+    try {
+      setSyncing(true);
+      const user = getUser();
+      const response = await authenticatedFetch(`${API_URL}/applications/${user.email}`);
+      const data = await response.json();
+
+      if (data.success) {
+        setApplications(data.applications);
+        localStorage.setItem("applications", JSON.stringify(data.applications));
+      } else {
+        // Fallback to localStorage if DB fetch fails
+        loadFromLocalStorage();
+      }
+    } catch (error) {
+      console.error("Failed to load from database:", error);
+      showToast("Using offline data", "warning");
+      loadFromLocalStorage();
+    } finally {
+      setSyncing(false);
+    }
+  };
+
+  // Sync applications to MongoDB
+  const syncToDatabase = async (updatedApps) => {
+    if (!isAuthenticated()) return;
+
+    try {
+      const user = getUser();
+      await authenticatedFetch(`${API_URL}/applications/sync`, {
+        method: 'POST',
+        body: JSON.stringify({
+          userId: user.email,
+          applications: updatedApps
+        })
+      });
+    } catch (error) {
+      console.error("Failed to sync to database:", error);
+      showToast("Data saved locally (will sync when online)", "warning");
+    }
+  };
 
   const handleApplicationUpdate = (updatedApps) => {
     setApplications([...updatedApps]);
+    syncToDatabase(updatedApps); // Sync to MongoDB
     showToast("Application updated successfully!", "success");
+  };
+
+  const handleAuthSuccess = async (user, token) => {
+    setCurrentUser(user);
+    setShowAuthModal(false);
+    showToast(`Welcome back, ${user.name}!`, "success");
+    await loadApplicationsFromDB();
+  };
+
+  const handleLogout = () => {
+    logout();
+    setApplications([]);
+    setCurrentUser(null);
+    setShowAuthModal(true);
+    showToast("Logged out successfully", "success");
   };
 
   const showToast = (message, type = "success") => {
@@ -153,6 +249,18 @@ const LandingPage = () => {
     event.target.value = null;
   };
 
+  // Show loading screen while checking auth
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg-primary)' }}>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4" style={{ borderColor: 'var(--text-primary)' }}></div>
+          <p style={{ color: 'var(--text-secondary)' }}>Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen px-4 py-8" style={{ background: 'var(--bg-primary)' }}>
       <div className="max-w-7xl mx-auto">
@@ -165,8 +273,40 @@ const LandingPage = () => {
             <p className="text-base" style={{ color: 'var(--text-secondary)' }}>
               Track your job applications with clarity
             </p>
+            {currentUser && (
+              <p className="text-sm mt-1" style={{ color: 'var(--text-tertiary)' }}>
+                Logged in as {currentUser.email}
+                {syncing && <span className="ml-2 text-xs">(syncing...)</span>}
+              </p>
+            )}
           </div>
-          <ThemeToggle />
+          <div className="flex items-center gap-3">
+            {currentUser && (
+              <>
+                <button
+                  onClick={() => setShowNotificationSettings(true)}
+                  className="btn-ghost flex items-center gap-2"
+                  title="Notification Settings"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                  </svg>
+                  <span className="hidden sm:inline">Notifications</span>
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="btn-ghost flex items-center gap-2"
+                  title="Logout"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  <span className="hidden sm:inline">Logout</span>
+                </button>
+              </>
+            )}
+            <ThemeToggle />
+          </div>
         </div>
 
         {/* Statistics Dashboard */}
@@ -311,6 +451,27 @@ const LandingPage = () => {
               setShowForm(false);
             }}
             formData={null}
+          />
+        )}
+
+        {/* Notification Settings Modal */}
+        {showNotificationSettings && currentUser && (
+          <NotificationSettings
+            userEmail={currentUser.email}
+            onClose={() => setShowNotificationSettings(false)}
+          />
+        )}
+
+        {/* Authentication Modal */}
+        {showAuthModal && (
+          <AuthModal
+            onClose={() => {
+              // Don't allow closing if not authenticated
+              if (!isAuthenticated()) {
+                showToast("Please login to continue", "warning");
+              }
+            }}
+            onAuthSuccess={handleAuthSuccess}
           />
         )}
 

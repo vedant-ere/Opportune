@@ -11,6 +11,7 @@ const ApplicationForm = ({ onClose, onSave, formData }) => {
     status:"Applied",
     applicationDate:"",
     followupDate:"",
+    customReminderDate:"",
     notes:"",
     location:"",
     salary:"",
@@ -202,6 +203,27 @@ const ApplicationForm = ({ onClose, onSave, formData }) => {
                 className="input-base w-full"
               />
             </div>
+          </div>
+
+          {/* Custom Reminder */}
+          <div>
+            <label className="text-sm mb-1.5 block font-medium flex items-center gap-2" style={{ color: 'var(--text-secondary)' }}>
+              <span>Custom Reminder Date & Time</span>
+              <span className="text-xs font-normal opacity-70">(Optional - Get reminded at a specific date/time)</span>
+            </label>
+            <input
+              type="datetime-local"
+              value={form.customReminderDate}
+              name="customReminderDate"
+              onChange={handleChange}
+              className="input-base w-full md:w-1/2"
+              placeholder="Select custom reminder date and time"
+            />
+            {form.customReminderDate && (
+              <p className="text-xs mt-1.5" style={{ color: 'var(--text-secondary)' }}>
+                You'll receive an email reminder on {new Date(form.customReminderDate).toLocaleString()}
+              </p>
+            )}
           </div>
 
           {/* Notes */}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opportune - Add Application</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        </svg>
+        <h1>Opportune</h1>
+      </div>
+    </div>
+
+    <!-- Status Message -->
+    <div id="status" class="status hidden"></div>
+
+    <!-- Loading State -->
+    <div id="loading" class="loading hidden">
+      <div class="spinner"></div>
+      <p>Extracting job details...</p>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="content">
+      <!-- Auto-detected Info Banner -->
+      <div id="detectedBanner" class="banner hidden">
+        <svg class="banner-icon" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+        </svg>
+        <span id="detectedText">Job details detected!</span>
+      </div>
+
+      <!-- Form -->
+      <form id="applicationForm">
+        <div class="form-group">
+          <label for="company">Company *</label>
+          <input type="text" id="company" name="company" required placeholder="e.g., Google">
+        </div>
+
+        <div class="form-group">
+          <label for="position">Position *</label>
+          <input type="text" id="position" name="position" required placeholder="e.g., Senior Software Engineer">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="status">Status *</label>
+            <select id="status" name="status" required>
+              <option value="Applied">Applied</option>
+              <option value="Waiting">Waiting</option>
+              <option value="Interview">Interview</option>
+              <option value="Accepted">Accepted</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="applicationDate">Application Date *</label>
+            <input type="date" id="applicationDate" name="applicationDate" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="location">Location</label>
+          <input type="text" id="location" name="location" placeholder="e.g., San Francisco, CA">
+        </div>
+
+        <div class="form-group">
+          <label for="salary">Salary Range</label>
+          <input type="text" id="salary" name="salary" placeholder="e.g., $120k - $180k">
+        </div>
+
+        <div class="form-group">
+          <label for="jobUrl">Job URL</label>
+          <input type="url" id="jobUrl" name="jobUrl" placeholder="Link to job posting">
+        </div>
+
+        <div class="form-group">
+          <label for="followupDate">Follow-up Date</label>
+          <input type="date" id="followupDate" name="followupDate">
+        </div>
+
+        <div class="form-group">
+          <label for="contactPerson">Contact Person</label>
+          <input type="text" id="contactPerson" name="contactPerson" placeholder="Recruiter name">
+        </div>
+
+        <div class="form-group">
+          <label for="contactEmail">Contact Email</label>
+          <input type="email" id="contactEmail" name="contactEmail" placeholder="recruiter@company.com">
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Notes</label>
+          <textarea id="notes" name="notes" rows="3" placeholder="Any additional notes..."></textarea>
+        </div>
+
+        <div class="button-group">
+          <button type="button" id="extractBtn" class="btn btn-secondary">
+            <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Extract from Page
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Add to Tracker
+          </button>
+        </div>
+      </form>
+
+      <!-- Footer -->
+      <div class="footer">
+        <a href="http://localhost:5173" target="_blank" class="footer-link">
+          Open Opportune Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

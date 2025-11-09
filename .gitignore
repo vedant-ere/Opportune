@@ -15,6 +15,15 @@ dist-ssr
 
 .claude/
 
+# Environment variables (IMPORTANT - contains sensitive data)
+.env
+.env.local
+.env.production
+
+# Database
+*.db
+*.sqlite
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -25,3 +34,19 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Extension icons (optional - users can add their own)
+browser-extension/icons/*.png
+browser-extension/icons/*.jpg
+browser-extension/icons/*.svg
+!browser-extension/icons/README.md
+
+FEATURES_IMPLEMENTED.md
+AUTHENTICATION_IMPLEMENTATION.md
+DEPLOYMENT_READY.md
+EMAIL_REMINDER_SETUP.md
+QUICKSTART.md
+SETUP_GUIDE.md
+.gitignore
+.env.example
+.claude/

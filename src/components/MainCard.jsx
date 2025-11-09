@@ -163,6 +163,21 @@ const MainCard = ({ application, onUpdate, applications, compact = false, onDele
                 </span>
               </div>
             )}
+            {application.customReminderDate && (
+              <div className="flex items-center justify-between text-sm">
+                <span style={{ color: 'var(--text-tertiary)' }}>Custom Reminder</span>
+                <span className="font-medium text-mono" style={{ color: 'var(--accent-primary)' }}>
+                  {new Date(application.customReminderDate).toLocaleString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                  })}
+                  <span className="status-dot interview inline-block ml-2"></span>
+                </span>
+              </div>
+            )}
           </div>
 
           {(application.jobUrl || application.contactPerson || application.notes) && (
